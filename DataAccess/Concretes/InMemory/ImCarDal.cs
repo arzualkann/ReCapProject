@@ -1,8 +1,9 @@
 ﻿using DataAccess.Abstracts;
-using Entities;
+using Entities.Conceretes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -53,5 +54,20 @@ public class ImCarDal : ICarDal
         {
             _cars.Remove(carToDelete);
         }
+    }
+
+    public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Car Get(Expression<Func<Car, bool>> filter)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Delete(Car entity)
+    {
+        throw new NotImplementedException();
     }
 }

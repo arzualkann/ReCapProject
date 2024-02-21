@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Entities.Abstacts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities;
+namespace Entities.Conceretes;
 
-public class Car
+public class Car:IEntity
 {
     public int Id { get; set; }
     public int BrandId { get; set; }
