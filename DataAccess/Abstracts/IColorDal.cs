@@ -9,4 +9,5 @@ namespace DataAccess.Abstracts;
 
 public interface IColorDal:IEntityRepository<Color>
 {
+
 }

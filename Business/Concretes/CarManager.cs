@@ -23,7 +23,10 @@ public class CarManager : ICarService
         {
             _carDal.Add(car);
         }
-        Console.WriteLine("Günlük kiralama 0 dan büyük olmalı.");
+        else
+        {
+            Console.WriteLine("Günlük kiralama bedeli 0'dan büyük olmalı");
+        }
     }
 
     public void Delete(int id)
@@ -46,6 +49,11 @@ public class CarManager : ICarService
     {
 
         return _carDal.Get(b => b.Id == id);
+    }
+
+    public IEnumerable<object> GetCarDetails()
+    {
+        throw new NotImplementedException();
     }
 }
 
