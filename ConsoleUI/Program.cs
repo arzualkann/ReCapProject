@@ -32,6 +32,8 @@ using Entities.Concrete;
 //        Console.WriteLine(car.Description);
 //    }
 //}
+
+//deneme
 //-----------------------------------------------
 //Dto-join test
 //CarManager carManager=new CarManager(new EfCarDal());
