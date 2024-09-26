@@ -41,6 +41,7 @@ using Entities.Concrete;
 //{
 //    Console.WriteLine(car.BrandName+"/"+car.DailyPrice+"/"+car.ColorName);
 //}
+//deneme
 //-------------------------------------------------------------------------------////-------------------------//
 CarManager carManager=new CarManager(new EfCarDal());
 var result = carManager.GetCarDetails();
