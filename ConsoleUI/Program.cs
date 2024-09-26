@@ -33,26 +33,32 @@ using Entities.Concrete;
 //    }
 //}
 
-//deneme
-//-----------------------------------------------
-//Dto-join test
-//CarManager carManager=new CarManager(new EfCarDal());
-//foreach (var car in carManager.GetCarDetails())
-//{
-//    Console.WriteLine(car.BrandName+"/"+car.DailyPrice+"/"+car.ColorName);
-//}
-//deneme
-//-------------------------------------------------------------------------------////-------------------------//
-CarManager carManager=new CarManager(new EfCarDal());
-var result = carManager.GetCarDetails();
-if (result.Success==true)
+public class Program
 {
-    foreach (var car in result.Data)
+    private static void Main(string[] args)
     {
-        Console.WriteLine(car.BrandName+"/"+car.DailyPrice);
+        //deneme
+        //-----------------------------------------------
+        //Dto-join test
+        //CarManager carManager=new CarManager(new EfCarDal());
+        //foreach (var car in carManager.GetCarDetails())
+        //{
+        //    Console.WriteLine(car.BrandName+"/"+car.DailyPrice+"/"+car.ColorName);
+        //}
+        //deneme
+        //-------------------------------------------------------------------------------////-------------------------//
+        CarManager carManager = new CarManager(new EfCarDal());
+        var result = carManager.GetCarDetails();
+        if (result.Success == true)
+        {
+            foreach (var car in result.Data)
+            {
+                Console.WriteLine(car.BrandName + "/" + car.DailyPrice);
+            }
+        }
+        else
+        {
+            Console.WriteLine(result.Message);
+        }
     }
-}
-else
-{
-    Console.WriteLine(result.Message);
 }

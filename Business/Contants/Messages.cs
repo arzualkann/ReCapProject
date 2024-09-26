@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities.Concrete;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,18 @@ namespace Business.Contants
         public static string ColorAdded="Renk eklendi";
         public static string ColorUpdated="Renk güncellendi";
         public static string ColorDeleted="Renk silindi";
-        internal static string ColorListed="Renkler listelendi";
+        public static string ColorListed="Renkler listelendi";
+        public static string CustomerUpdated="Müşteri güncellendi";
+        public static string CustomerDeleted="Müşteri silindi";
+        public static string CustomerAdded="Müşteri eklendi";
+        public static string CustomerListed="Müşteriler listelendi";
+        public static string RentalAdded="Kiralama bilgisi eklendi";
+        public static string RentalDeleted= "Kiralama bilgisi silindi";
+        public static string RentalListed= "Kiralama bilgisi listlendi";
+        public static string RentalUpdated= "Kiralama bilgisi güncellendi";
+        public static string UserAdded="Kullancı eklendi";
+        public static string UsersListed="Kullancılar listelendi";
+        public static string UserUpdated="Kullanıcı güncellendi";
+        public static string UserDeleted="Kullanıcı silindi";
     }
 }
