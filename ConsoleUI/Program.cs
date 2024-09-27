@@ -3,62 +3,35 @@ using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
 
-//CarTest();
+CustomerTest();
 
-//BrandTest();
+RentalTest();
 
-//ColorManager colorManager=new ColorManager(new EfColorDal());
-//colorManager.Add(new Color { ColorId = 13, Name = "mor" });
-
-//foreach (var color in colorManager.GetAll())
-//{
-//    Console.WriteLine(color.ColorName);
-//}
-
-
-//static void BrandTest()
-//{
-//    BrandManager brandManager = new BrandManager(new EfBrandDal());
-//    var brandById = brandManager.GetById(1);
-//    Console.WriteLine(brandById.BrandName);
-//}
-
-//static void CarTest()
-//{
-//    CarManager carManager = new CarManager(new EfCarDal());
-//    carManager.Add(new Car { Id = 11, BrandId = 2, ColorId = 1, ModelYear = 1998, DailyPrice = 5, Description = "deneme" });
-//    foreach (var car in carManager.GetAll())
-//    {
-//        Console.WriteLine(car.Description);
-//    }
-//}
-
-public class Program
+static void CustomerTest()
 {
-    private static void Main(string[] args)
+    CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+    customerManager.Add(new Customer { CustomerId = 1, UserId = 1, CompanyName = "tobeto" });
+    var result = customerManager.GetAll();
+    if (result.Success)
     {
-        //deneme
-        //-----------------------------------------------
-        //Dto-join test
-        //CarManager carManager=new CarManager(new EfCarDal());
-        //foreach (var car in carManager.GetCarDetails())
-        //{
-        //    Console.WriteLine(car.BrandName+"/"+car.DailyPrice+"/"+car.ColorName);
-        //}
-        //deneme
-        //-------------------------------------------------------------------------------////-------------------------//
-        CarManager carManager = new CarManager(new EfCarDal());
-        var result = carManager.GetCarDetails();
-        if (result.Success == true)
+        foreach (var customer in result.Data)
         {
-            foreach (var car in result.Data)
-            {
-                Console.WriteLine(car.BrandName + "/" + car.DailyPrice);
-            }
+            Console.WriteLine(customer.CustomerId);
         }
-        else
+
+    }
+}
+
+static void RentalTest()
+{
+    RentalManager rentalManager = new RentalManager(new EfRentalDal());
+    //rentalManager.Add(new Rental {RentalId=1,CarId=1,CustomerId=5,RentalDate= new DateTime(2024, 12, 1),ReturnDate=new DateTime(2024,12,8) });
+    var result2 = rentalManager.GetAll();
+    if (result2.Success)
+    {
+        foreach (var rental in result2.Data)
         {
-            Console.WriteLine(result.Message);
+            Console.WriteLine(rental.RentalDate + "//" + rental.ReturnDate);
         }
     }
 }

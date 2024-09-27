@@ -33,5 +33,6 @@ namespace Business.Contants
         public static string UsersListed="Kullancılar listelendi";
         public static string UserUpdated="Kullanıcı güncellendi";
         public static string UserDeleted="Kullanıcı silindi";
+        public static string RentalNotAdded="Araba kiralanamadı";
     }
 }
