@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Contants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -21,17 +23,9 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
-            if (car.Description.Length < 2)
-            {
-                throw new Exception("Car name must be at least 2 characters long. ");
-            }
-
-            if (car.DailyPrice < 0)
-            {
-                throw new Exception("Car daily price must be greater than be 0. ");
-            }
             _carDal.Add(car);
             return new SuccessResult(Messages.CarAdded);
         }
