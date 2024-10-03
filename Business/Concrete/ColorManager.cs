@@ -1,5 +1,9 @@
-﻿using Business.Abstract;
+﻿using AutoMapper;
+using Business.Abstract;
 using Business.Contants;
+using Business.Requests.Colors;
+using Business.Responses.Colors;
+using Business.Rules;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
@@ -15,39 +19,40 @@ namespace Business.Concrete
 {
     public class ColorManager : IColorService
     {
-        IColorDal _colorDal;
+        private readonly IColorRepository _colorRepository;
+        private readonly IMapper _mapper;
+        private readonly ColorBusinessRules _colorBusinessRules;
 
-        public ColorManager(IColorDal colorDal)
+        public ColorManager(IColorRepository colorRepository, IMapper mapper, ColorBusinessRules colorBusinessRules)
         {
-            _colorDal = colorDal;
-        }
-        [ValidationAspect(typeof(ColorValidator))]
-        public IResult Add(Color color)
-        {
-            _colorDal.Add(color);
-            return new SuccessResult(Messages.ColorAdded);
+            _colorRepository = colorRepository;
+            _mapper = mapper;
+            _colorBusinessRules = colorBusinessRules;
         }
 
-        public IResult Delete(Color color)
+        public Task<IDataResult<CreateColorResponse>> AddAsync(CreateColorRequest request)
         {
-            _colorDal.Delete(color);
-            return new SuccessResult(Messages.ColorDeleted);
+            throw new NotImplementedException();
         }
 
-        public IDataResult<List<Color>> GetAll()
+        public Task<IResult> DeleteAsync(DeleteColorRequest request)
         {
-            return new SuccessDataResult<List<Color>>(_colorDal.GetAll(),Messages.ColorListed);
+            throw new NotImplementedException();
         }
 
-        public IDataResult<Color> GetById(int id)
+        public Task<IDataResult<List<GetAllColorResponse>>> GetAllAsync()
         {
-            return new SuccessDataResult<Color>(_colorDal.Get(c => c.ColorId == id));
+            throw new NotImplementedException();
         }
 
-        public IResult Update(Color color)
+        public Task<IDataResult<GetByIdColorResponse>> GetByIdAsync(int id)
         {
-           _colorDal.Update(color);
-            return new SuccessResult(Messages.ColorUpdated);
+            throw new NotImplementedException();
+        }
+
+        public Task<IDataResult<UpdateColorResponse>> UpdateAsync(UpdateColorRequest request)
+        {
+            throw new NotImplementedException();
         }
     }
 }

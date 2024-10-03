@@ -1,4 +1,9 @@
-﻿using Core.Utilities.Results;
+﻿using Business.Requests.Rentals;
+using Business.Requests.Users;
+using Business.Responses.Rentals;
+using Business.Responses.Users;
+using Core.Utilities.Results;
+using Core.Utilities.Security.Entities;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -10,11 +15,13 @@ namespace Business.Abstract
 {
     public interface IUserService
     {
-        IDataResult<List<User>> GetAll();
-        IResult Add(User user);
-        IResult Update(User user);
-        IResult Delete(User user);
-        IDataResult<User> GetById(int id);
+        Task<IDataResult<CreateUserResponse>> AddAsync(CreateUserRequest request);
+        Task<IDataResult<UpdateUserResponse>> UpdateAsync(UpdateUserRequest request);
+        Task<IResult> DeleteAsync(DeleteUserRequest request);
+        Task<IDataResult<List<GetAllUserResponse>>> GetAllAsync();
+        Task<IDataResult<GetByIdUserResponse>> GetByIdAsync(int id);
+        Task<DataResult<User>> GetById(int id);
+        Task<DataResult<User>> GetByMail(string email);
 
     }
 }

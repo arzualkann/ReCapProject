@@ -1,5 +1,9 @@
-﻿using Business.Abstract;
+﻿using AutoMapper;
+using Business.Abstract;
 using Business.Contants;
+using Business.Requests.Cars;
+using Business.Responses.Cars;
+using Business.Rules;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
@@ -16,55 +20,40 @@ namespace Business.Concrete
 {
     public class CarManager : ICarService
     {
-        ICarDal _carDal;
+        private readonly ICarRepository _carRepository;
+        private readonly IMapper _mapper;
+        private readonly CarBusinessRules _carBusinessRules;
 
-        public CarManager(ICarDal carDal)
+        public CarManager(ICarRepository carRepository, IMapper mapper, CarBusinessRules carBusinessRules)
         {
-            _carDal = carDal;
+            _carRepository = carRepository;
+            _mapper = mapper;
+            _carBusinessRules = carBusinessRules;
         }
 
-        [ValidationAspect(typeof(CarValidator))]
-        public IResult Add(Car car)
+        public Task<IDataResult<CreateCarResponse>> AddAsync(CreateCarRequest request)
         {
-            _carDal.Add(car);
-            return new SuccessResult(Messages.CarAdded);
+            throw new NotImplementedException();
         }
 
-        public IResult Delete(Car car)
+        public Task<IResult> DeleteAsync(DeleteCarRequest request)
         {
-            _carDal.Delete(car);
-            return new SuccessResult(Messages.CarDeleted);
+            throw new NotImplementedException();
         }
 
-        public IDataResult<List<Car>> GetAll()
+        public Task<IDataResult<List<GetAllCarResponse>>> GetAllAsync()
         {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(),Messages.CarListed);
+            throw new NotImplementedException();
         }
 
-        public IDataResult<Car> GetById(int id)
+        public Task<IDataResult<GetByIdCarResponse>> GetByIdAsync(int id)
         {
-            return new SuccessDataResult<Car>(_carDal.Get(c => c.Id == id));
+            throw new NotImplementedException();
         }
 
-        public IDataResult<List<CarDetailDTO>> GetCarDetails()
+        public Task<IDataResult<UpdateCarResponse>> UpdateAsync(UpdateCarRequest request)
         {
-            return new SuccessDataResult<List<CarDetailDTO>>(_carDal.GetCarDetails());
-        }
-
-        public IDataResult<List<Car>> GetCarsByBrandId(int brandId)
-        {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(p => p.BrandId == brandId));
-        }
-
-        public IDataResult<List<Car>> GetCarsByColorId(int colorId)
-        {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(p => p.ColorId == colorId));
-        }
-
-        public IResult Update(Car car)
-        {
-           _carDal.Update(car);
-            return new SuccessResult(Messages.CarUpdated);
+            throw new NotImplementedException();
         }
     }
 }

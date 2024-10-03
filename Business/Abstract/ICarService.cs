@@ -1,4 +1,6 @@
-﻿using Core.Utilities.Results;
+﻿using Business.Requests.Cars;
+using Business.Responses.Cars;
+using Core.Utilities.Results;
 using Entities.Concrete;
 using Entities.DTOs;
 using System;
@@ -11,14 +13,11 @@ namespace Business.Abstract
 {
     public interface ICarService
     {
-        IDataResult<List<Car>> GetAll();
-        IResult Add(Car car);
-        IResult Update(Car car);
-        IResult Delete(Car car);
-        IDataResult<Car> GetById(int id);
-        IDataResult<List<Car>> GetCarsByBrandId(int brandId);
-        IDataResult<List<Car>> GetCarsByColorId(int colorId);
-        IDataResult<List<CarDetailDTO>> GetCarDetails();
+        Task<IDataResult<CreateCarResponse>> AddAsync(CreateCarRequest request);
+        Task<IDataResult<UpdateCarResponse>> UpdateAsync(UpdateCarRequest request);
+        Task<IResult> DeleteAsync(DeleteCarRequest request);
+        Task<IDataResult<List<GetAllCarResponse>>> GetAllAsync();
+        Task<IDataResult<GetByIdCarResponse>> GetByIdAsync(int id);
 
     }
 }

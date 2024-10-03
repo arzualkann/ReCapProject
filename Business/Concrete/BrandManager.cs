@@ -1,5 +1,9 @@
-﻿using Business.Abstract;
+﻿using AutoMapper;
+using Business.Abstract;
 using Business.Contants;
+using Business.Requests.Brands;
+using Business.Responses.Brands;
+using Business.Rules;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
@@ -15,39 +19,53 @@ namespace Business.Concrete
 {
     public class BrandManager : IBrandService
     {
-        IBrandDal _brandDal;
+        private readonly IBrandRepository _brandRepository;
+        private readonly IMapper _mapper;
+        private readonly BrandBusinessRules _brandBusinessRules;
 
-        public BrandManager(IBrandDal brandDal)
+        public BrandManager(IBrandRepository brandRepository, IMapper mapper, BrandBusinessRules brandBusinessRules)
         {
-            _brandDal = brandDal;
-        }
-        [ValidationAspect(typeof(BrandValidator))]
-        public IResult Add(Brand brand)
-        {
-            _brandDal.Add(brand);
-            return new SuccessResult(Messages.BrandAdded);
+            _brandRepository = brandRepository;
+            _mapper = mapper;
+            _brandBusinessRules = brandBusinessRules;
         }
 
-        public IResult Delete(Brand brand)
+        public async Task<IDataResult<CreateBrandResponse>> AddAsync(CreateBrandRequest request)
         {
-            _brandDal.Delete(brand);
-            return new SuccessResult(Messages.BrandDeleted);
+            Brand brand=_mapper.Map<Brand>(request);
+            await _brandRepository.AddAsync(brand);
+            CreateBrandResponse response=_mapper.Map<CreateBrandResponse>(brand);
+            return new SuccessDataResult<CreateBrandResponse>(response,BrandMessages.BrandAdded);
         }
 
-        public IDataResult<List<Brand>> GetAll()
+        public async Task<IResult> DeleteAsync(DeleteBrandRequest request)
         {
-            return new SuccessDataResult<List<Brand>>( _brandDal.GetAll(),Messages.BrandListed);
+            var result = await _brandRepository.GetByIdAsync(x=>x.Id==request.Id);
+            await _brandRepository.DeleteAsync(result);
+            return new SuccessResult(BrandMessages.BrandDeleted);
         }
 
-        public IDataResult<Brand> GetById(int id)
+        public async Task<IDataResult<List<GetAllBrandResponse>>> GetAllAsync()
         {
-            return new SuccessDataResult<Brand>(_brandDal.Get(b => b.BrandId == id));
+            var list=await _brandRepository.GetAllAsync();
+            List<GetAllBrandResponse> response=_mapper.Map<List<GetAllBrandResponse>>(list);
+            return new SuccessDataResult<List<GetAllBrandResponse>>(response,BrandMessages.BrandListed);
         }
 
-        public IResult Update(Brand brand)
+        public async Task<IDataResult<GetByIdBrandResponse>> GetByIdAsync(int id)
         {
-            _brandDal.Update(brand);
-            return new SuccessResult(Messages.BrandUpdated);
+            var item = await _brandRepository.GetByIdAsync(x=>x.Id==id);
+            GetByIdBrandResponse response=_mapper.Map<GetByIdBrandResponse>(item);
+            return new SuccessDataResult<GetByIdBrandResponse>(response);
+        }
+
+        public async Task<IDataResult<UpdateBrandResponse>> UpdateAsync(UpdateBrandRequest request)
+        {
+            var item = await _brandRepository.GetByIdAsync(x=>x.Id==request.Id);
+            _mapper.Map(request, item);
+            await _brandRepository.UpdateAsync(item);
+            UpdateBrandResponse response=_mapper.Map<UpdateBrandResponse>(item);
+            return new SuccessDataResult<UpdateBrandResponse>(response,BrandMessages.BrandUpdated);
         }
     }
 }

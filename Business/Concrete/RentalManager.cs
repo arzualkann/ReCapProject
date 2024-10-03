@@ -1,5 +1,9 @@
-﻿using Business.Abstract;
+﻿using AutoMapper;
+using Business.Abstract;
 using Business.Contants;
+using Business.Requests.Rentals;
+using Business.Responses.Rentals;
+using Business.Rules;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
@@ -15,47 +19,40 @@ namespace Business.Concrete
 {
     public class RentalManager : IRentalService
     {
-        IRentalDal _rentalDal;
+        private readonly IRentalRepository _rentalRepository;
+        private readonly IMapper _mapper;
+        private readonly RentalBusinessRules _rentalBusinessRules;
 
-        public RentalManager(IRentalDal rentalDal)
+        public RentalManager(IRentalRepository rentalRepository, IMapper mapper, RentalBusinessRules rentalBusinessRules)
         {
-            _rentalDal = rentalDal;
+            _rentalRepository = rentalRepository;
+            _mapper = mapper;
+            _rentalBusinessRules = rentalBusinessRules;
         }
 
-        [ValidationAspect(typeof(RentalValidator))]
-        public IResult Add(Rental rental)
+        public Task<IDataResult<CreateRentalResponse>> AddAsync(CreateRentalRequest request)
         {
-            if (rental.ReturnDate!=null)
-            {
-                _rentalDal.Add(rental);
-                return new SuccessResult(Messages.RentalAdded);
-            }
-            else
-            {
-               return new ErrorResult(Messages.RentalNotAdded);
-            }
+            throw new NotImplementedException();
         }
 
-        public IResult Delete(Rental rental)
+        public Task<IResult> DeleteAsync(DeleteRentalRequest request)
         {
-            _rentalDal.Delete(rental);
-            return new SuccessResult(Messages.RentalDeleted);
+            throw new NotImplementedException();
         }
 
-        public IDataResult<List<Rental>> GetAll()
+        public Task<IDataResult<List<GetAllRentalResponse>>> GetAllAsync()
         {
-            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(),Messages.RentalListed);
+            throw new NotImplementedException();
         }
 
-        public IDataResult<Rental> GetById(int id)
+        public Task<IDataResult<GetByIdRentalResponse>> GetByIdAsync(int id)
         {
-            return new SuccessDataResult<Rental>(_rentalDal.Get(r=>r.RentalId==id));
+            throw new NotImplementedException();
         }
 
-        public IResult Update(Rental rental)
+        public Task<IDataResult<UpdateRentalResponse>> UpdateAsync(UpdateRentalRequest request)
         {
-            _rentalDal.Update(rental);
-            return new SuccessResult(Messages.RentalUpdated);
+            throw new NotImplementedException();
         }
     }
 }

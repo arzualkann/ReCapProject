@@ -1,5 +1,9 @@
-﻿using Business.Abstract;
+﻿using AutoMapper;
+using Business.Abstract;
 using Business.Contants;
+using Business.Requests.Customers;
+using Business.Responses.Customers;
+using Business.Rules;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
@@ -15,40 +19,40 @@ namespace Business.Concrete
 {
     public class CustomerManager : ICustomerService
     {
-        ICustomerDal _customerDal;
+        private readonly ICustomerRepository _customerRepository;
+        private readonly IMapper _mapper;
+        private readonly CustomerBusinessRules _customerBusinessRules;
 
-        public CustomerManager(ICustomerDal customerDal)
+        public CustomerManager(ICustomerRepository customerRepository, IMapper mapper, CustomerBusinessRules customerBusinessRules)
         {
-            _customerDal = customerDal;
+            _customerRepository = customerRepository;
+            _mapper = mapper;
+            _customerBusinessRules = customerBusinessRules;
         }
 
-        [ValidationAspect(typeof(CustomerValidator))]
-        public IResult Add(Customer customer)
+        public Task<IDataResult<CreateCustomerResponse>> AddAsync(CreateCustomerRequest request)
         {
-            _customerDal.Add(customer);
-            return new SuccessResult(Messages.CustomerAdded);
+            throw new NotImplementedException();
         }
 
-        public IResult Delete(Customer customer)
+        public Task<IResult> DeleteAsync(DeleteCustomerRequest request)
         {
-            _customerDal.Delete(customer);
-            return new SuccessResult(Messages.CustomerDeleted);
+            throw new NotImplementedException();
         }
 
-        public IDataResult<List<Customer>> GetAll()
+        public Task<IDataResult<List<GetAllCustomerResponse>>> GetAllAsync()
         {
-            return new SuccessDataResult<List<Customer>>(_customerDal.GetAll(),Messages.CustomerListed);
+            throw new NotImplementedException();
         }
 
-        public IDataResult<Customer> GetById(int id)
+        public Task<IDataResult<GetByIdCustomerResponse>> GetByIdAsync(int id)
         {
-            return new SuccessDataResult<Customer>(_customerDal.Get(c=>c.CustomerId==id));
+            throw new NotImplementedException();
         }
 
-        public IResult Update(Customer customer)
+        public Task<IDataResult<UpdateCustomerResponse>> UpdateAsync(UpdateCustomerRequest request)
         {
-            _customerDal.Update(customer);
-            return new SuccessResult(Messages.CustomerUpdated);
+            throw new NotImplementedException();
         }
     }
 }

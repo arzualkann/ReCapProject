@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.Requests.Users;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,64 +10,41 @@ namespace WebAPI.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        IUserService _userService;
+        private readonly IUserService _userService;
 
         public UsersController(IUserService userService)
         {
             _userService = userService;
         }
-        [HttpGet("getall")]
-        public IActionResult Get()
+
+        [HttpPost("AddAsync")]
+        public async Task<IActionResult> AddAsync(CreateUserRequest request)
         {
-            var result = _userService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest();
+            return Ok(await _userService.AddAsync(request));
         }
 
-        [HttpGet("getbyid")]
-        public IActionResult Get(int id)
+        [HttpGet("GetAllAsync")]
+        public async Task<IActionResult> GetAllAsync()
         {
-            var result = _userService.GetById(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest();
-        }
-        [HttpPost("add")]
-        public IActionResult Post(User user)
-        {
-            var result = _userService.Add(user);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest();
+            return Ok(await _userService.GetAllAsync());
         }
 
-        [HttpPost("delete")]
-        public IActionResult Delete(User user)
+        [HttpGet("GetByIdAsync")]
+        public async Task<IActionResult> GetByIdAsync(int id)
         {
-            var result = _userService.Delete(user);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            return Ok(await _userService.GetByIdAsync(id));
         }
 
-        [HttpPost("update")]
-        public IActionResult Update(User user)
+        [HttpDelete("DeleteAsync")]
+        public async Task<IActionResult> DeletedAsync(DeleteUserRequest request)
         {
-            var result = _userService.Update(user);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            return Ok(await _userService.DeleteAsync(request));
+        }
+
+        [HttpPut("UpdateAsync")]
+        public async Task<IActionResult> UpdateAsync(UpdateUserRequest request)
+        {
+            return Ok(await _userService.UpdateAsync(request));
         }
     }
 }

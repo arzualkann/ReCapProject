@@ -1,4 +1,6 @@
-﻿using Core.Utilities.Results;
+﻿using Business.Requests.Colors;
+using Business.Responses.Colors;
+using Core.Utilities.Results;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -10,10 +12,11 @@ namespace Business.Abstract
 {
     public interface IColorService
     {
-        IDataResult<List<Color>> GetAll();
-        IResult Add(Color color);
-        IResult Update(Color color);
-        IResult Delete(Color color);
-        IDataResult<Color> GetById(int id);
+        Task<IDataResult<CreateColorResponse>> AddAsync(CreateColorRequest request);
+        Task<IDataResult<UpdateColorResponse>> UpdateAsync(UpdateColorRequest request);
+        Task<IResult> DeleteAsync(DeleteColorRequest request);
+        Task<IDataResult<List<GetAllColorResponse>>> GetAllAsync();
+        Task<IDataResult<GetByIdColorResponse>> GetByIdAsync(int id);
+
     }
 }

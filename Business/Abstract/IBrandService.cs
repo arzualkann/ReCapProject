@@ -1,4 +1,6 @@
-﻿using Core.Utilities;
+﻿using Business.Requests.Brands;
+using Business.Responses.Brands;
+using Core.Utilities;
 using Core.Utilities.Results;
 using Entities.Concrete;
 using System;
@@ -11,10 +13,11 @@ namespace Business.Abstract
 {
     public interface IBrandService
     {
-        IDataResult<List<Brand>> GetAll();
-        IResult Add(Brand brand);
-        IResult Update(Brand brand);
-        IResult Delete(Brand brand);
-        IDataResult<Brand> GetById(int id);
+        Task<IDataResult<CreateBrandResponse>> AddAsync(CreateBrandRequest request);
+        Task<IDataResult<UpdateBrandResponse>> UpdateAsync(UpdateBrandRequest request);
+        Task<IResult> DeleteAsync(DeleteBrandRequest request);
+        Task<IDataResult<List<GetAllBrandResponse>>> GetAllAsync();
+        Task<IDataResult<GetByIdBrandResponse>> GetByIdAsync(int id);
+
     }
 }

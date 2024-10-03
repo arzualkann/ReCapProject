@@ -1,4 +1,6 @@
-﻿using Core.Utilities.Results;
+﻿using Business.Requests.Customers;
+using Business.Responses.Customers;
+using Core.Utilities.Results;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -10,11 +12,12 @@ namespace Business.Abstract
 {
     public interface ICustomerService
     {
-        IDataResult<List<Customer>> GetAll();
-        IResult Add(Customer customer);
-        IResult Update(Customer customer);
-        IResult Delete(Customer customer);
-        IDataResult<Customer> GetById(int id);
+        Task<IDataResult<CreateCustomerResponse>> AddAsync(CreateCustomerRequest request);
+        Task<IDataResult<UpdateCustomerResponse>> UpdateAsync(UpdateCustomerRequest request);
+        Task<IResult> DeleteAsync(DeleteCustomerRequest request);
+        Task<IDataResult<List<GetAllCustomerResponse>>> GetAllAsync();
+        Task<IDataResult<GetByIdCustomerResponse>> GetByIdAsync(int id);
+
 
     }
 }

@@ -1,4 +1,6 @@
-﻿using Core.Utilities.Results;
+﻿using Business.Requests.Rentals;
+using Business.Responses.Rentals;
+using Core.Utilities.Results;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -10,10 +12,11 @@ namespace Business.Abstract
 {
     public interface IRentalService
     {
-        IDataResult<List<Rental>> GetAll();
-        IResult Add(Rental rental);
-        IResult Update(Rental rental);
-        IResult Delete(Rental rental);
-        IDataResult<Rental> GetById(int id);
+        Task<IDataResult<CreateRentalResponse>> AddAsync(CreateRentalRequest request);
+        Task<IDataResult<UpdateRentalResponse>> UpdateAsync(UpdateRentalRequest request);
+        Task<IResult> DeleteAsync(DeleteRentalRequest request);
+        Task<IDataResult<List<GetAllRentalResponse>>> GetAllAsync();
+        Task<IDataResult<GetByIdRentalResponse>> GetByIdAsync(int id);
+
     }
 }
