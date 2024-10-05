@@ -2,12 +2,14 @@
 using Business.Abstract;
 using Business.Contants;
 using Business.Requests.Rentals;
+using Business.Responses.CarImages;
 using Business.Responses.Rentals;
 using Business.Rules;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
+using DataAccess.Concrete.Repositories;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -30,29 +32,42 @@ namespace Business.Concrete
             _rentalBusinessRules = rentalBusinessRules;
         }
 
-        public Task<IDataResult<CreateRentalResponse>> AddAsync(CreateRentalRequest request)
+        public async Task<IDataResult<CreateRentalResponse>> AddAsync(CreateRentalRequest request)
         {
-            throw new NotImplementedException();
+            Rental rental = _mapper.Map<Rental>(request);
+            await _rentalRepository.AddAsync(rental);
+            CreateRentalResponse response = _mapper.Map<CreateRentalResponse>(rental);
+            return new SuccessDataResult<CreateRentalResponse>(response, RentalMessages.RentalAdded);
         }
 
-        public Task<IResult> DeleteAsync(DeleteRentalRequest request)
+        public async Task<IResult> DeleteAsync(DeleteRentalRequest request)
         {
-            throw new NotImplementedException();
+            var item = await _rentalRepository.GetByIdAsync(c => c.Id == request.Id);
+            await _rentalRepository.DeleteAsync(item);
+            return new SuccessResult(RentalMessages.RentalDeleted);
         }
 
-        public Task<IDataResult<List<GetAllRentalResponse>>> GetAllAsync()
+        public async Task<IDataResult<List<GetAllRentalResponse>>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var list = await _rentalRepository.GetAllAsync();
+            List<GetAllRentalResponse> response = _mapper.Map<List<GetAllRentalResponse>>(list);
+            return new SuccessDataResult<List<GetAllRentalResponse>>(response);
         }
 
-        public Task<IDataResult<GetByIdRentalResponse>> GetByIdAsync(int id)
+        public async Task<IDataResult<GetByIdRentalResponse>> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var item = await _rentalRepository.GetByIdAsync(x => x.Id == id);
+            GetByIdRentalResponse response = _mapper.Map<GetByIdRentalResponse>(item);
+            return new SuccessDataResult<GetByIdRentalResponse>(response);
         }
 
-        public Task<IDataResult<UpdateRentalResponse>> UpdateAsync(UpdateRentalRequest request)
+        public async Task<IDataResult<UpdateRentalResponse>> UpdateAsync(UpdateRentalRequest request)
         {
-            throw new NotImplementedException();
+            var item = await _rentalRepository.GetByIdAsync(c => c.Id == request.Id);
+            _mapper.Map(request, item);
+            await _rentalRepository.UpdateAsync(item);
+            UpdateRentalResponse response = _mapper.Map<UpdateRentalResponse>(item);
+            return new SuccessDataResult<UpdateRentalResponse>(response, RentalMessages.RentalUpdated);
         }
     }
 }

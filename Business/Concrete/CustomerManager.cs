@@ -2,12 +2,14 @@
 using Business.Abstract;
 using Business.Contants;
 using Business.Requests.Customers;
+using Business.Responses.CarImages;
 using Business.Responses.Customers;
 using Business.Rules;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
+using DataAccess.Concrete.Repositories;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -30,29 +32,42 @@ namespace Business.Concrete
             _customerBusinessRules = customerBusinessRules;
         }
 
-        public Task<IDataResult<CreateCustomerResponse>> AddAsync(CreateCustomerRequest request)
+        public async Task<IDataResult<CreateCustomerResponse>> AddAsync(CreateCustomerRequest request)
         {
-            throw new NotImplementedException();
+            Customer customer = _mapper.Map<Customer>(request);
+            await _customerRepository.AddAsync(customer);
+            CreateCustomerResponse response = _mapper.Map<CreateCustomerResponse>(customer);
+            return new SuccessDataResult<CreateCustomerResponse>(response, CustomerMessages.CustomerAdded);
         }
 
-        public Task<IResult> DeleteAsync(DeleteCustomerRequest request)
+        public async Task<IResult> DeleteAsync(DeleteCustomerRequest request)
         {
-            throw new NotImplementedException();
+            var item = await _customerRepository.GetByIdAsync(c => c.Id == request.Id);
+            await _customerRepository.DeleteAsync(item);
+            return new SuccessResult(CustomerMessages.CustomerDeleted);
         }
 
-        public Task<IDataResult<List<GetAllCustomerResponse>>> GetAllAsync()
+        public async Task<IDataResult<List<GetAllCustomerResponse>>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var list = await _customerRepository.GetAllAsync();
+            List<GetAllCustomerResponse> response = _mapper.Map<List<GetAllCustomerResponse>>(list);
+            return new SuccessDataResult<List<GetAllCustomerResponse>>(response);
         }
 
-        public Task<IDataResult<GetByIdCustomerResponse>> GetByIdAsync(int id)
+        public async Task<IDataResult<GetByIdCustomerResponse>> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var item = await _customerRepository.GetByIdAsync(x => x.Id == id);
+            GetByIdCustomerResponse response = _mapper.Map<GetByIdCustomerResponse>(item);
+            return new SuccessDataResult<GetByIdCustomerResponse>(response);
         }
 
-        public Task<IDataResult<UpdateCustomerResponse>> UpdateAsync(UpdateCustomerRequest request)
+        public async Task<IDataResult<UpdateCustomerResponse>> UpdateAsync(UpdateCustomerRequest request)
         {
-            throw new NotImplementedException();
+            var item = await _customerRepository.GetByIdAsync(c => c.Id == request.Id);
+            _mapper.Map(request, item);
+            await _customerRepository.UpdateAsync(item);
+            UpdateCustomerResponse response = _mapper.Map<UpdateCustomerResponse>(item);
+            return new SuccessDataResult<UpdateCustomerResponse>(response, CustomerMessages.CustomerUpdated);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Business.Abstract;
+using Business.Contants;
 using Business.Requests.CarImages;
 using Business.Responses.CarImages;
 using Business.Rules;
@@ -27,29 +28,42 @@ namespace Business.Concrete
             _carImageBusinessRules = carImageBusinessRules;
         }
 
-        public Task<IDataResult<CreateCarImageResponse>> AddAsync(CreateCarImageRequest request)
+        public async Task<IDataResult<CreateCarImageResponse>> AddAsync(CreateCarImageRequest request)
         {
-            throw new NotImplementedException();
+            CarImage carImage = _mapper.Map<CarImage>(request);
+            await _carImageRepository.AddAsync(carImage);
+            CreateCarImageResponse response = _mapper.Map<CreateCarImageResponse>(carImage);
+            return new SuccessDataResult<CreateCarImageResponse>(response, CarImageMessages.CarImageAdded);
         }
 
-        public Task<IResult> DeleteAsync(DeleteCarImageRequest request)
+        public async Task<IResult> DeleteAsync(DeleteCarImageRequest request)
         {
-            throw new NotImplementedException();
+            var item = await _carImageRepository.GetByIdAsync(c => c.Id == request.Id);
+            await _carImageRepository.DeleteAsync(item);
+            return new SuccessResult(CarImageMessages.CarImageDeleted);
         }
 
-        public Task<IDataResult<List<GetAllCarImageResponse>>> GetAllAsync()
+        public async Task<IDataResult<List<GetAllCarImageResponse>>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var list = await _carImageRepository.GetAllAsync();
+            List<GetAllCarImageResponse> response = _mapper.Map<List<GetAllCarImageResponse>>(list);
+            return new SuccessDataResult<List<GetAllCarImageResponse>>(response);
         }
 
-        public Task<IDataResult<GetByIdCarImageResponse>> GetByIdAsync(int id)
+        public async Task<IDataResult<GetByIdCarImageResponse>> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var item = await _carImageRepository.GetByIdAsync(x => x.Id == id);
+            GetByIdCarImageResponse response = _mapper.Map<GetByIdCarImageResponse>(item);
+            return new SuccessDataResult<GetByIdCarImageResponse>(response);
         }
 
-        public Task<IDataResult<UpdateCarImageResponse>> UpdateAsync(UpdateCarImageRequest request)
+        public async Task<IDataResult<UpdateCarImageResponse>> UpdateAsync(UpdateCarImageRequest request)
         {
-            throw new NotImplementedException();
+            var item = await _carImageRepository.GetByIdAsync(c => c.Id == request.Id);
+            _mapper.Map(request,item);
+            await _carImageRepository.UpdateAsync(item);
+            UpdateCarImageResponse response=_mapper.Map<UpdateCarImageResponse>(item);
+            return new SuccessDataResult<UpdateCarImageResponse>(response,CarImageMessages.CarImageUpdated);
         }
     }
 }

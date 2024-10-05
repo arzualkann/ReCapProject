@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using Business.Abstract;
 using Business.Contants;
 using Business.Requests.Colors;
+using Business.Responses.CarImages;
 using Business.Responses.Colors;
 using Business.Rules;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
+using DataAccess.Concrete.Repositories;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -30,29 +33,41 @@ namespace Business.Concrete
             _colorBusinessRules = colorBusinessRules;
         }
 
-        public Task<IDataResult<CreateColorResponse>> AddAsync(CreateColorRequest request)
+        public async Task<IDataResult<CreateColorResponse>> AddAsync(CreateColorRequest request)
         {
-            throw new NotImplementedException();
+            Color color = _mapper.Map<Color>(request);
+            await _colorRepository.AddAsync(color);
+            CreateColorResponse response=_mapper.Map<CreateColorResponse>(color);
+            return new SuccessDataResult<CreateColorResponse>(response,ColorMessages.ColorAdded);
+        }
+        public async Task<IResult> DeleteAsync(DeleteColorRequest request)
+        {
+            var item = await _colorRepository.GetByIdAsync(c => c.Id == request.Id);
+            await _colorRepository.DeleteAsync(item);
+            return new SuccessResult(ColorMessages.ColorDeleted);
         }
 
-        public Task<IResult> DeleteAsync(DeleteColorRequest request)
+        public async Task<IDataResult<List<GetAllColorResponse>>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var list = await _colorRepository.GetAllAsync();
+            List<GetAllColorResponse> response = _mapper.Map<List<GetAllColorResponse>>(list);
+            return new SuccessDataResult<List<GetAllColorResponse>>(response);
         }
 
-        public Task<IDataResult<List<GetAllColorResponse>>> GetAllAsync()
+        public async Task<IDataResult<GetByIdColorResponse>> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var item = await _colorRepository.GetByIdAsync(x => x.Id == id);
+            GetByIdColorResponse response = _mapper.Map<GetByIdColorResponse>(item);
+            return new SuccessDataResult<GetByIdColorResponse>(response);
         }
 
-        public Task<IDataResult<GetByIdColorResponse>> GetByIdAsync(int id)
+        public async Task<IDataResult<UpdateColorResponse>> UpdateAsync(UpdateColorRequest request)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<IDataResult<UpdateColorResponse>> UpdateAsync(UpdateColorRequest request)
-        {
-            throw new NotImplementedException();
+            var item = await _colorRepository.GetByIdAsync(c => c.Id == request.Id);
+            _mapper.Map(request, item);
+            await _colorRepository.UpdateAsync(item);
+            UpdateColorResponse response = _mapper.Map<UpdateColorResponse>(item);
+            return new SuccessDataResult<UpdateColorResponse>(response, ColorMessages.ColorUpdated);
         }
     }
 }

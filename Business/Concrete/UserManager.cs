@@ -4,20 +4,11 @@ using Business.Contants;
 using Business.Requests.Users;
 using Business.Responses.Users;
 using Business.Rules;
-using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Logging;
-using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Logging.Serilog.Loggers;
 using Core.Utilities.Results;
 using Core.Utilities.Security.Entities;
-using DataAccess.Abstract;
 using DataAccess.Abstracts;
-using Entities.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.Concrete
 {

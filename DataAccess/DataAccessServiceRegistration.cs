@@ -13,7 +13,7 @@ namespace DataAccess
         {
             services.AddDbContext<BaseDbContext>
                 (options => options.UseSqlServer(configuration.
-                GetConnectionString("TobetoNet3AConnectionString")));
+                GetConnectionString("ReCapProjectConnectionString")));
 
             services.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).
             Where(t => t.ServiceType.Name.EndsWith("Repository"));

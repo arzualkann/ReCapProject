@@ -8,5 +8,8 @@ namespace Business.Contants
 {
     public static class CarImageMessages
     {
+        public static string CarImageAdded="Araba fotoğrafı eklendi";
+        public static string CarImageDeleted = "Araba fotoğrafı silindi";
+        public static string CarImageUpdated = "Araba fotoğrafı güncellendi";
     }
 }
