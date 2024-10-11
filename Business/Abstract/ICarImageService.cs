@@ -3,6 +3,7 @@ using Business.Responses.CarImages;
 using Core.Utilities.Results;
 using Entities.Concrete;
 using Entities.DTOs;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,12 @@ namespace Business.Abstract
 {
     public interface ICarImageService
     {
-        Task<IDataResult<CreateCarImageResponse>> AddAsync(CreateCarImageRequest request);
-        Task<IDataResult<UpdateCarImageResponse>> UpdateAsync(UpdateCarImageRequest request);
-        Task<IResult> DeleteAsync(DeleteCarImageRequest request);
-        Task<IDataResult<List<GetAllCarImageResponse>>> GetAllAsync();
-        Task<IDataResult<GetByIdCarImageResponse>> GetByIdAsync(int id);
+        Task<List<CarImage>> GetList();
+        Task<CarImage> Get(int id);
+        Task<CarImage> Add(IFormFile file, CreateCarImageRequest request);
+        Task<CarImage> Update(IFormFile file, CarImage carImage);
+        Task<CarImage> Delete(CarImage carImage);
+        Task<List<CarImage>> GetImagesByCarId(int id);
 
 
     }

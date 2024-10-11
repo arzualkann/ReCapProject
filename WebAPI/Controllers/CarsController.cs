@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Requests.Brands;
+using Business.Requests.Cars;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,58 +17,33 @@ namespace WebAPI.Controllers
         {
             _carService = carService;
         }
-        [HttpGet("getall")]
-        public IActionResult Get()
+        [HttpPost("AddAsync")]
+        public async Task<IActionResult> AddAsync(CreateCarRequest request)
         {
-            var result = _carService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest();
+            return Ok(await _carService.AddAsync(request));
         }
 
-        [HttpGet("getbyid")]
-        public IActionResult Get(int id)
+        [HttpGet("GetAllAsync")]
+        public async Task<IActionResult> GetAllAsync()
         {
-            var result = _carService.GetById(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest();
-        }
-        [HttpPost("add")]
-        public IActionResult Post(Car car)
-        {
-            var result = _carService.Add(car);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest();
+            return Ok(await _carService.GetAllAsync());
         }
 
-        [HttpPost("delete")]
-        public IActionResult Delete(Car car)
+        [HttpPost("GetByIdAsync")]
+        public async Task<IActionResult> GetByIdAsync(int id)
         {
-            var result = _carService.Delete(car);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            return Ok(await _carService.GetAllAsync());
+        }
+        [HttpDelete("DeleteAsync")]
+        public async Task<IActionResult> DeleteAsync(DeleteCarRequest request)
+        {
+            return Ok(await _carService.DeleteAsync(request));
         }
 
-        [HttpPost("update")]
-        public IActionResult Update(Car car)
+        [HttpPut("UpdateAsync")]
+        public async Task<IActionResult> UpdateAsync(UpdateCarRequest request)
         {
-            var result = _carService.Update(car);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            return Ok(await _carService.UpdateAsync(request));
         }
     }
 }

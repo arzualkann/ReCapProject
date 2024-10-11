@@ -4,9 +4,11 @@ using Business.Contants;
 using Business.Requests.CarImages;
 using Business.Responses.CarImages;
 using Business.Rules;
+using Core.Utilities.Helpers;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,52 +20,63 @@ namespace Business.Concrete
     public class CarImageManager : ICarImageService
     {
         private readonly ICarImageRepository _carImageRepository;
-        private readonly IMapper _mapper;
         private readonly CarImageBusinessRules _carImageBusinessRules;
 
-        public CarImageManager(ICarImageRepository carImageRepository, IMapper mapper, CarImageBusinessRules carImageBusinessRules)
+        public CarImageManager(ICarImageRepository carImageRepository, CarImageBusinessRules carImageBusinessRules)
         {
             _carImageRepository = carImageRepository;
-            _mapper = mapper;
             _carImageBusinessRules = carImageBusinessRules;
         }
 
-        public async Task<IDataResult<CreateCarImageResponse>> AddAsync(CreateCarImageRequest request)
+        public async Task<CarImage> Add(IFormFile file, CreateCarImageRequest request)
         {
-            CarImage carImage = _mapper.Map<CarImage>(request);
-            await _carImageRepository.AddAsync(carImage);
-            CreateCarImageResponse response = _mapper.Map<CreateCarImageResponse>(carImage);
-            return new SuccessDataResult<CreateCarImageResponse>(response, CarImageMessages.CarImageAdded);
+            await _carImageBusinessRules.CheckIfCarImageNull(request.CarId);
+            await _carImageBusinessRules.CheckIfCarImageFormat(file);
+            await _carImageBusinessRules.CheckIfImageLimit(request.CarId);
+            CarImage carImage = new CarImage()
+            {
+                CarId = request.CarId,
+                ImagePath = request.ImagePath,
+            };
+            carImage.ImagePath = FileHelper.Add(file, "CarImages");
+            return await _carImageRepository.AddAsync(carImage);
+
         }
 
-        public async Task<IResult> DeleteAsync(DeleteCarImageRequest request)
+        public async Task<CarImage> Delete(CarImage carImage)
         {
-            var item = await _carImageRepository.GetByIdAsync(c => c.Id == request.Id);
-            await _carImageRepository.DeleteAsync(item);
-            return new SuccessResult(CarImageMessages.CarImageDeleted);
+            await _carImageBusinessRules.CarImageIdShouldExistsWhenSelected(carImage.Id);
+            var path = Path.Combine(Directory.GetCurrentDirectory(), $@"wwwroot") + _carImageRepository.GetByIdAsync(c => c.Id == carImage.Id).Result.ImagePath;
+            var result = FileHelper.Delete(path);
+            return await _carImageRepository.DeleteAsync(carImage);
+
         }
 
-        public async Task<IDataResult<List<GetAllCarImageResponse>>> GetAllAsync()
+        public async Task<CarImage> Get(int id)
         {
-            var list = await _carImageRepository.GetAllAsync();
-            List<GetAllCarImageResponse> response = _mapper.Map<List<GetAllCarImageResponse>>(list);
-            return new SuccessDataResult<List<GetAllCarImageResponse>>(response);
+            return await _carImageRepository.GetByIdAsync(c => c.Id == id);
+
         }
 
-        public async Task<IDataResult<GetByIdCarImageResponse>> GetByIdAsync(int id)
+        public async Task<List<CarImage>> GetImagesByCarId(int id)
         {
-            var item = await _carImageRepository.GetByIdAsync(x => x.Id == id);
-            GetByIdCarImageResponse response = _mapper.Map<GetByIdCarImageResponse>(item);
-            return new SuccessDataResult<GetByIdCarImageResponse>(response);
+
+            await _carImageBusinessRules.CarImageCarIdShouldExistsWhenSelected(id);
+            return await _carImageBusinessRules.CheckIfCarImageNull(id);
         }
 
-        public async Task<IDataResult<UpdateCarImageResponse>> UpdateAsync(UpdateCarImageRequest request)
+        public async Task<List<CarImage>> GetList()
         {
-            var item = await _carImageRepository.GetByIdAsync(c => c.Id == request.Id);
-            _mapper.Map(request,item);
-            await _carImageRepository.UpdateAsync(item);
-            UpdateCarImageResponse response=_mapper.Map<UpdateCarImageResponse>(item);
-            return new SuccessDataResult<UpdateCarImageResponse>(response,CarImageMessages.CarImageUpdated);
+            return await _carImageRepository.GetAllAsync();
+        }
+
+        public async Task<CarImage> Update(IFormFile file, CarImage carImage)
+        {
+            await _carImageBusinessRules.CheckIfCarImageFormat(file);
+            await _carImageBusinessRules.CheckIfCarImageNull(carImage.CarId);
+            var path = Path.Combine(Directory.GetCurrentDirectory(), $@"wwwroot") + _carImageRepository.GetByIdAsync(c => c.Id == carImage.Id).Result.ImagePath;
+            carImage.ImagePath = FileHelper.Update(path, file, "CarImages");
+            return await _carImageRepository.UpdateAsync(carImage);
         }
     }
 }

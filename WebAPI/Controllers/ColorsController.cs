@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Requests.Cars;
+using Business.Requests.Colors;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,57 +18,32 @@ namespace WebAPI.Controllers
             _colorService = colorService;
         }
         [HttpGet("getall")]
-        public IActionResult Get()
+        public async Task<IActionResult> AddAsync(CreateColorRequest request)
         {
-            var result = _colorService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest();
+            return Ok(await _colorService.AddAsync(request));
         }
 
-        [HttpGet("getbyid")]
-        public IActionResult Get(int id)
+        [HttpGet("GetAllAsync")]
+        public async Task<IActionResult> GetAllAsync()
         {
-            var result = _colorService.GetById(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest();
-        }
-        [HttpPost("add")]
-        public IActionResult Post(Color color)
-        {
-            var result = _colorService.Add(color);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest();
+            return Ok(await _colorService.GetAllAsync());
         }
 
-        [HttpPost("delete")]
-        public IActionResult Delete(Color color)
+        [HttpPost("GetByIdAsync")]
+        public async Task<IActionResult> GetByIdAsync(int id)
         {
-            var result = _colorService.Delete(color);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            return Ok(await _colorService.GetAllAsync());
+        }
+        [HttpDelete("DeleteAsync")]
+        public async Task<IActionResult> DeleteAsync(DeleteColorRequest request)
+        {
+            return Ok(await _colorService.DeleteAsync(request));
         }
 
-        [HttpPost("update")]
-        public IActionResult Update(Color color)
+        [HttpPut("UpdateAsync")]
+        public async Task<IActionResult> UpdateAsync(UpdateColorRequest request)
         {
-            var result = _colorService.Update(color);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            return Ok(await _colorService.UpdateAsync(request));
         }
     }
 }

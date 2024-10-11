@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Requests.Cars;
+using Business.Requests.Rentals;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,58 +17,33 @@ namespace WebAPI.Controllers
         {
             _rentalService = rentalService;
         }
-        [HttpGet("getall")]
-        public IActionResult Get()
+        public async Task<IActionResult> AddAsync(CreateRentalRequest request)
         {
-            var result = _rentalService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest();
+            return Ok(await _rentalService.AddAsync(request));
         }
 
-        [HttpGet("getbyid")]
-        public IActionResult Get(int id)
+        [HttpGet("GetAllAsync")]
+        public async Task<IActionResult> GetAllAsync()
         {
-            var result = _rentalService.GetById(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest();
-        }
-        [HttpPost("add")]
-        public IActionResult Post(Rental rental)
-        {
-            var result = _rentalService.Add(rental);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest();
+            return Ok(await _rentalService.GetAllAsync());
         }
 
-        [HttpPost("delete")]
-        public IActionResult Delete(Rental rental)
+        [HttpPost("GetByIdAsync")]
+        public async Task<IActionResult> GetByIdAsync(int id)
         {
-            var result = _rentalService.Delete(rental);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            return Ok(await _rentalService.GetAllAsync());
+        }
+        [HttpDelete("DeleteAsync")]
+        public async Task<IActionResult> DeleteAsync(DeleteRentalRequest request)
+        {
+            return Ok(await _rentalService.DeleteAsync(request));
         }
 
-        [HttpPost("update")]
-        public IActionResult Update(Rental rental)
+        [HttpPut("UpdateAsync")]
+        public async Task<IActionResult> UpdateAsync(UpdateRentalRequest request)
         {
-            var result = _rentalService.Update(rental);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            return Ok(await _rentalService.UpdateAsync(request));
         }
+
     }
 }

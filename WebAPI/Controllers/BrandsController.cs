@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.Requests.Brands;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,65 +10,40 @@ namespace WebAPI.Controllers
     [ApiController]
     public class BrandsController : ControllerBase
     {
-        IBrandService _brandService;
+        private readonly IBrandService _brandService;
 
         public BrandsController(IBrandService brandService)
         {
             _brandService = brandService;
         }
-        [HttpGet("getall")]
-        public IActionResult Get() 
-        { 
-          var result=_brandService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest();
+
+        [HttpPost("AddAsync")]
+        public async Task<IActionResult> AddAsync(CreateBrandRequest request)
+        {
+            return Ok(await _brandService.AddAsync(request));
         }
 
-        [HttpGet("getbyid")]
-        public IActionResult Get(int id)
+        [HttpGet("GetAllAsync")]
+        public async Task<IActionResult> GetAllAsync()
         {
-            var result=_brandService.GetById(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest();
-        }
-        [HttpPost("add")]
-        public IActionResult Post(Brand brand)
-        {
-            var result = _brandService.Add(brand);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest();
+            return Ok(await _brandService.GetAllAsync());
         }
 
-        [HttpPost("delete")]
-        public IActionResult Delete(Brand brand)
+        [HttpPost("GetByIdAsync")]
+        public async Task<IActionResult> GetByIdAsync(int id)
         {
-            var result = _brandService.Delete(brand);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            return Ok(await _brandService.GetAllAsync());
+        }
+        [HttpDelete("DeleteAsync")]
+        public async Task<IActionResult> DeleteAsync(DeleteBrandRequest request)
+        {
+            return Ok(await _brandService.DeleteAsync(request));
         }
 
-        [HttpPost("update")]
-        public IActionResult Update(Brand brand) 
+        [HttpPut("UpdateAsync")]
+        public async Task<IActionResult> UpdateAsync(UpdateBrandRequest request)
         {
-            var result = _brandService.Update(brand);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            return Ok(await _brandService.UpdateAsync(request));
         }
-
     }
 }

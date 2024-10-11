@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.Requests.CarImages;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,65 +10,53 @@ namespace WebAPI.Controllers
     [ApiController]
     public class CarImagesController : ControllerBase
     {
-        ICarImageService _carImageService;
+        private readonly ICarImageService _carImageService;
 
         public CarImagesController(ICarImageService carImageService)
         {
-           _carImageService = carImageService;
+            _carImageService = carImageService;
         }
 
-        [HttpGet("getall")]
-        public IActionResult Get()
+        [HttpGet("getlist")]
+        public async Task<IActionResult> GetAll()
         {
-            var result = _carImageService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest();
+            var result = await _carImageService.GetList();
+            return Ok(result);
         }
 
-        [HttpGet("getbyid")]
-        public IActionResult Get(Guid id)
+        [HttpGet("getcarid/{carId}")]
+        public async Task<IActionResult> GetImagesByCarId(int carId)
         {
-            var result = _carImageService.GetById(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest();
-        }
-        [HttpPost("add")]
-        public IActionResult Post(CarImage carImage)
-        {
-            var result = _carImageService.Add(carImage);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest();
+            var result = await _carImageService.GetImagesByCarId(carId);
+            return Ok(result);
         }
 
-        [HttpPost("delete")]
-        public IActionResult Delete(CarImage carImage)
+        [HttpPost]
+        public async Task<IActionResult> Add(IFormFile file, [FromForm] CreateCarImageRequest carImage)
         {
-            var result = _carImageService.Delete(carImage);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            var result = await _carImageService.Add(file, carImage);
+            return Ok(result);
         }
 
-        [HttpPost("update")]
-        public IActionResult Update(CarImage carImage)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            var result = _carImageService.Update(carImage);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+
+            var carImage = await _carImageService.Get(id);
+            var result = await _carImageService.Delete(carImage);
+            return Ok(result);
+
         }
+
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(IFormFile formFile, [FromRoute] int id)
+        {
+            var carImage = await _carImageService.Get(id);
+            var result = await _carImageService.Update(formFile, carImage);
+            return Ok(result);
+        }
+
+
     }
 }

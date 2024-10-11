@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Requests.Cars;
+using Business.Requests.Customers;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,58 +17,33 @@ namespace WebAPI.Controllers
         {
             _customerService = customerService;
         }
-        [HttpGet("getall")]
-        public IActionResult Get()
+        public async Task<IActionResult> AddAsync(CreateCustomerRequest request)
         {
-            var result = _customerService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest();
+            return Ok(await _customerService.AddAsync(request));
         }
 
-        [HttpGet("getbyid")]
-        public IActionResult Get(int id)
+        [HttpGet("GetAllAsync")]
+        public async Task<IActionResult> GetAllAsync()
         {
-            var result = _customerService.GetById(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest();
-        }
-        [HttpPost("add")]
-        public IActionResult Post(Customer customer)
-        {
-            var result = _customerService.Add(customer);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest();
+            return Ok(await _customerService.GetAllAsync());
         }
 
-        [HttpPost("delete")]
-        public IActionResult Delete(Customer customer)
+        [HttpPost("GetByIdAsync")]
+        public async Task<IActionResult> GetByIdAsync(int id)
         {
-            var result = _customerService.Delete(customer);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            return Ok(await _customerService.GetAllAsync());
+        }
+        [HttpDelete("DeleteAsync")]
+        public async Task<IActionResult> DeleteAsync(DeleteCustomerRequest request)
+        {
+            return Ok(await _customerService.DeleteAsync(request));
         }
 
-        [HttpPost("update")]
-        public IActionResult Update(Customer customer)
+        [HttpPut("UpdateAsync")]
+        public async Task<IActionResult> UpdateAsync(UpdateCustomerRequest request)
         {
-            var result = _customerService.Update(customer);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            return Ok(await _customerService.UpdateAsync(request));
         }
+
     }
 }
