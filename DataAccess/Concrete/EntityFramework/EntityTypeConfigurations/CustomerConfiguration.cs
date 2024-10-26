@@ -17,7 +17,7 @@ namespace DataAccess.Concrete.EntityFramework.EntityTypeConfigurations
             builder.Property(x => x.Id).HasColumnName("Id");
             builder.Property(a => a.CompanyName).HasColumnName("CompanyName");
 
-            builder.HasMany(x => x.Rentals); //one to many
+            builder.HasMany(x => x.Rentals).WithOne(r=>r.Customer);
         }
     }
 

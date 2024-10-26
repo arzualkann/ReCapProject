@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Concrete.EntityFramework.EntityTypeConfigurations
 {
-    public class CarConfiguration:IEntityTypeConfiguration<Car>
+    public class CarConfiguration : IEntityTypeConfiguration<Car>
     {
         public void Configure(EntityTypeBuilder<Car> builder)
         {
@@ -22,8 +22,10 @@ namespace DataAccess.Concrete.EntityFramework.EntityTypeConfigurations
             builder.Property(x => x.Description).HasColumnName("Description");
             builder.Property(x => x.DailyPrice).HasColumnName("DailyPrice");
 
-            builder.HasMany(x=>x.CarImages);
-            builder.HasMany(x => x.Rentals);
+            builder.HasMany(x => x.CarImages).WithOne(ci => ci.Car);
+            builder.HasMany(x => x.Rentals).WithOne(r => r.Car);            
+            builder.HasOne(x => x.Seller).WithMany(s => s.Cars);
+
         }
     }
 }

@@ -10,10 +10,11 @@ namespace Entities.Concrete
 {
     public class Customer:User
     {
-        public string CompanyName { get; set; }
+        public string PhoneNumber { get; set; }
+        public string? CompanyName { get; set; }
         public List<Rental> Rentals { get; set; }
 
-        public Customer(int id, string username, string firstName, string lastName, DateTime dateOfBirth, string nationalIdentity, string email, byte[] passwordHash, byte[] passwordSalt,string companyName)
+        public Customer(int id, string username, string firstName, string lastName, DateTime dateOfBirth, string nationalIdentity, string email, byte[] passwordHash, byte[] passwordSalt,string companyName, string phoneNumber)
         {
             Id = id;
             Username = username;
@@ -25,6 +26,7 @@ namespace Entities.Concrete
             PasswordHash = passwordHash;
             PasswordSalt = passwordSalt;
             CompanyName = companyName;
+            PhoneNumber = phoneNumber;
         }
 
 

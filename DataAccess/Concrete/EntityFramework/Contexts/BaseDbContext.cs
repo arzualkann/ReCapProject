@@ -23,6 +23,7 @@ namespace DataAccess.Concrete.EntityFramework.Contexts
         public DbSet<User> Users { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
+        public DbSet<Seller> Sellers {  get; set; }
 
         public BaseDbContext(DbContextOptions dbContextOptions, IConfiguration configuration)
             : base(dbContextOptions)
