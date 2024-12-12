@@ -9,7 +9,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RentalsController : ControllerBase
+    public class RentalsController : BaseController
     {
         IRentalService _rentalService;
 
@@ -17,6 +17,7 @@ namespace WebAPI.Controllers
         {
             _rentalService = rentalService;
         }
+        [HttpPost("AddAsync")]
         public async Task<IActionResult> AddAsync(CreateRentalRequest request)
         {
             return Ok(await _rentalService.AddAsync(request));

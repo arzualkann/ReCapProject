@@ -4,8 +4,8 @@ namespace Core.Utilities.Security.Entities;
 
 public class UserOperationClaim:BaseEntity<int>
 {
-    public int UserId { get; set; }   //1
-    public int OperationClaimId { get; set; } // 1=>developer
+    public int UserId { get; set; } 
+    public int OperationClaimId { get; set; }
     public virtual User User { get; set; }
     public virtual OperationClaim OperationClaim { get; set; }
 

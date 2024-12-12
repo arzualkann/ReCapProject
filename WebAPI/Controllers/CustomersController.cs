@@ -9,7 +9,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CustomersController : ControllerBase
+    public class CustomersController : BaseController
     {
         ICustomerService _customerService;
 
@@ -17,6 +17,7 @@ namespace WebAPI.Controllers
         {
             _customerService = customerService;
         }
+        [HttpPost("AddAsync")]
         public async Task<IActionResult> AddAsync(CreateCustomerRequest request)
         {
             return Ok(await _customerService.AddAsync(request));

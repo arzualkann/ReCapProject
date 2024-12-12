@@ -9,7 +9,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ColorsController : ControllerBase
+    public class ColorsController : BaseController
     {
         IColorService _colorService;
 
@@ -17,7 +17,7 @@ namespace WebAPI.Controllers
         {
             _colorService = colorService;
         }
-        [HttpGet("getall")]
+        [HttpPost("AddAsync")]
         public async Task<IActionResult> AddAsync(CreateColorRequest request)
         {
             return Ok(await _colorService.AddAsync(request));

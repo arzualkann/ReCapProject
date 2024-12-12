@@ -8,7 +8,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SellersController : ControllerBase
+    public class SellersController : BaseController
     {
         private readonly ISellerService _sellerService;
 

@@ -8,7 +8,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CarImagesController : ControllerBase
+    public class CarImagesController : BaseController
     {
         private readonly ICarImageService _carImageService;
 

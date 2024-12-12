@@ -21,7 +21,7 @@ namespace DataAccess.Concrete.EntityFramework.EntityTypeConfigurations
             builder.Property(x => x.UpdatedDate).HasColumnName("UpdatedDate");
             builder.Property(x => x.DeletedDate).HasColumnName("DeletedDate");
 
-            builder.HasOne(x => x.Car).WithMany(c => c.CarImages);
+            builder.HasOne(x => x.Car).WithMany(c => c.CarImages).HasForeignKey(c=>c.CarId);
         }
     }
 }

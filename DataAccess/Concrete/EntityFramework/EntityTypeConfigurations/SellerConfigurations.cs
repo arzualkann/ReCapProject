@@ -14,13 +14,13 @@ namespace DataAccess.Concrete.EntityFramework.EntityTypeConfigurations
     {
         public void Configure(EntityTypeBuilder<Seller> builder)
         {
-            builder.ToTable("Sellers").HasKey(b => b.Id);
+            builder.ToTable("Sellers");
             builder.Property(x => x.Id).HasColumnName("Id");
             builder.Property(s => s.CompanyName).HasColumnName("CompanyName").IsRequired().HasMaxLength(100);
             builder.Property(s => s.PhoneNumber).HasColumnName("PhoneNumber").HasMaxLength(15);
             builder.Property(s => s.Address).HasColumnName("Address").HasMaxLength(250);
             builder.Property(s => s.RegistrationDate).HasColumnName("RegistrationDate").IsRequired();
-            builder.HasMany(s => s.Cars).WithOne(c => c.Seller);
+            builder.HasMany(s => s.Cars).WithOne(c => c.Seller).HasForeignKey(c => c.SellerId);
 
         }
     }

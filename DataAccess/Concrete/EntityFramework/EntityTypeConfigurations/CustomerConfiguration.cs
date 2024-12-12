@@ -16,8 +16,9 @@ namespace DataAccess.Concrete.EntityFramework.EntityTypeConfigurations
             builder.ToTable("Customers");
             builder.Property(x => x.Id).HasColumnName("Id");
             builder.Property(a => a.CompanyName).HasColumnName("CompanyName");
+            builder.Property(x => x.PhoneNumber).HasColumnName("PhoneNumber");
 
-            builder.HasMany(x => x.Rentals).WithOne(r=>r.Customer);
+            builder.HasMany(x => x.Rentals).WithOne(r=>r.Customer).HasForeignKey(r => r.CustomerId);
         }
     }
 

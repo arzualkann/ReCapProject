@@ -18,13 +18,14 @@ namespace DataAccess.Concrete.EntityFramework.EntityTypeConfigurations
             builder.Property(x => x.BrandId).HasColumnName("BrandId");
             builder.Property(x => x.ColorId).HasColumnName("ColorId");
             builder.Property(x => x.ModelYear).HasColumnName("ModelYear");
-            builder.Property(x => x.DailyPrice).HasColumnName("DailyPrice");
+            builder.Property(x => x.DailyPrice).HasColumnName("DailyPrice").HasColumnType("decimal(18,6)");
             builder.Property(x => x.Description).HasColumnName("Description");
             builder.Property(x => x.DailyPrice).HasColumnName("DailyPrice");
 
-            builder.HasMany(x => x.CarImages).WithOne(ci => ci.Car);
-            builder.HasMany(x => x.Rentals).WithOne(r => r.Car);            
-            builder.HasOne(x => x.Seller).WithMany(s => s.Cars);
+            builder.HasMany(x => x.CarImages).WithOne(ci => ci.Car).HasForeignKey(ci => ci.CarId);
+            builder.HasMany(x => x.Rentals).WithOne(r => r.Car).HasForeignKey(r => r.CarId);
+            builder.HasOne(x => x.Seller).WithMany(s => s.Cars).HasForeignKey(x => x.SellerId); 
+            builder.HasOne(x => x.Color).WithMany(c => c.Cars).HasForeignKey(x => x.ColorId);
 
         }
     }

@@ -8,7 +8,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BrandsController : ControllerBase
+    public class BrandsController : BaseController
     {
         private readonly IBrandService _brandService;
 

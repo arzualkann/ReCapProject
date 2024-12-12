@@ -5,18 +5,17 @@ namespace Entities.Concrete
     public class Brand:BaseEntity<int>
     {
         public string BrandName { get; set; }
-        public List<Car> Cars { get; set; }
-
-        public Brand(int id, string brandName)
-        {
-            Id= id;
-            BrandName = brandName;
-            Cars =new List<Car>();
-        }
+        public ICollection<Model> Models { get; set; }
 
         public Brand()
         {
-            Cars= new List<Car>();
+            Models = new HashSet<Model>();
+        }
+
+        public Brand(int id, string brandName) : this()
+        {
+            Id = id;
+            BrandName = brandName;
         }
     }
 }
